@@ -2,6 +2,11 @@
  *
  * **/
 
-export const BASE_PATH = "content";
+const BASE_PATH = "content";
 
-export const CONFIG_FILE_NAME = "zumo.config.js";
+const CONFIG_FILE_NAME = "zumo.config.js";
+
+module.exports = {
+  BASE_PATH,
+  CONFIG_FILE_NAME,
+};

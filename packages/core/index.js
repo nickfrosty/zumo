@@ -1,7 +1,6 @@
-// export * from "./src/index";
-
-export * from "./src/fs";
-export * from "./src/docs";
-export * from "./src/formatters";
-
-export * from "./src/next";
+module.exports = {
+  ...require("./src/fs"),
+  ...require("./src/docs"),
+  ...require("./src/formatters"),
+  ...require("./src/next"),
+};

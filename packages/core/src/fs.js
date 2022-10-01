@@ -2,18 +2,18 @@
  *
  * **/
 
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
-import { BASE_PATH } from "./constants";
-import { generateSlug } from "./formatters";
+const { BASE_PATH } = require("./constants");
+const { generateSlug } = require("./formatters");
 
 /**
  * Locate a file's path based on it's slug
  * @param {object} options
  * @returns `string` path of the located file
  */
-export function locateFilePath(options) {
+function locateFilePath(options) {
   // options structure
   // const struct = {
   // 	// either a path or a slug is required, but not both. Path will supersede the slug, since it is faster
@@ -67,11 +67,7 @@ export function locateFilePath(options) {
  * @param {boolean} drafts
  * @returns array of file paths, and when `autoParseFile` is true returns an array of file paths with their file parsed
  */
-export function crawlForFiles(
-  dirName = "",
-  autoParseFile = true,
-  drafts = false
-) {
+function crawlForFiles(dirName = "", autoParseFile = true, drafts = false) {
   let files = [];
 
   // only resolve in the `BASE_PATH` directory
@@ -106,3 +102,8 @@ export function crawlForFiles(
 
   return files;
 }
+
+module.exports = {
+  locateFilePath,
+  crawlForFiles,
+};

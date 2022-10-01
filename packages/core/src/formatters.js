@@ -2,13 +2,13 @@
  *
  * **/
 
-import path from "path";
-import { DateTime } from "luxon";
-import slugify from "slugify";
+const path = require("path");
+const { DateTime } = require("luxon");
+const slugify = require("slugify");
 
-import { CONFIG_FILE_NAME } from "./constants";
+const { CONFIG_FILE_NAME } = require("./constants");
 
-export function generateSlug(item) {
+function generateSlug(item) {
   // example item
   const struct = {
     path: "", // string of the full file path
@@ -56,7 +56,7 @@ export function generateSlug(item) {
  * @param {object} items keyed object of items to parse into the `template`
  * @returns fully parsed `template`
  */
-export function parseTemplate(template, items) {
+function parseTemplate(template, items) {
   template = template.toString() || "";
 
   for (const [key, value] of Object.entries(items))
@@ -69,7 +69,7 @@ export function parseTemplate(template, items) {
  * Determine a docs' primary date based on the standard priority order of: `date`, `updatedAt`, `createdAt`
  * @param {object} listing Object listing of the posts dates
  */
-export function getDateByPriority({
+function getDateByPriority({
   date = null,
   updatedAt = null,
   createdAt = null,
@@ -89,12 +89,12 @@ export function getDateByPriority({
  * @param {number} perPage number of items desired per page
  * @returns `pagination` object ready to be used
  */
-export function computePagination(
+function computePagination(
   count = 1,
   page = 1,
   baseHref = "",
   template = "{{baseHref}}/page/{{id}}",
-  perPage = 9
+  perPage = 9,
 ) {
   // parse and format the `page` (usually obtained via route `params`)
   page = parseInt(page || 1) || 1;
@@ -123,7 +123,7 @@ export function computePagination(
  * @param {string|null} format `DateTime` compatible date format
  * @returns formatted date string, ready for display
  */
-export function displayDate(date, format = null) {
+function displayDate(date, format = null) {
   const defaultDate = "MMM dd, yyyy";
 
   try {
@@ -137,3 +137,11 @@ export function displayDate(date, format = null) {
     .toFormat(format)
     .toString();
 }
+
+module.exports = {
+  computePagination,
+  displayDate,
+  generateSlug,
+  getDateByPriority,
+  parseTemplate,
+};

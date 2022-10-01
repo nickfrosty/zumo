@@ -2,11 +2,11 @@
  *
  * **/
 
-import path from "path";
-import { BASE_PATH } from "./constants";
+const path = require("path");
+const { BASE_PATH } = require("./constants");
 
-import { generateSlug, parseTemplate } from "./formatters";
-import { crawlForFiles } from "./";
+const { generateSlug, parseTemplate } = require("./formatters");
+const { crawlForFiles } = require("./fs");
 
 /**
  * Generate a valid Next.JS `getStaticPaths` object that is plug-and-play
@@ -14,7 +14,7 @@ import { crawlForFiles } from "./";
  * @param {boolean} drafts whether or not to include items that are marked as `draft: true` in their front-matter
  * @returns a valid Next.JS `getStaticPaths` object
  */
-export function generateStaticPaths(files = null, drafts = false) {
+function generateStaticPaths(files = null, drafts = false) {
   const paths = [];
 
   // when 'files' is a string => auto crawl that directory
@@ -49,7 +49,7 @@ export function generateStaticPaths(files = null, drafts = false) {
  * @param {object} pagination object computed from `computePagination`
  * @returns a valid Next.JS `getStaticPaths` object
  */
-export function paginateStaticPaths(pagination) {
+function paginateStaticPaths(pagination) {
   let paths = [];
 
   for (let i = 2; i <= pagination.totalPages; i++) {
@@ -57,9 +57,14 @@ export function paginateStaticPaths(pagination) {
       parseTemplate(pagination.template, {
         baseHref: pagination.baseHref,
         id: i,
-      })
+      }),
     );
   }
 
   return { paths, fallback: true };
 }
+
+module.exports = {
+  generateStaticPaths,
+  paginateStaticPaths,
+};
