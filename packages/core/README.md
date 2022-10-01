@@ -1,4 +1,4 @@
-# zumo core
+# zumo
 
 > NOTE: This repo will be treated with a `beta` status until v1.0.0
 
