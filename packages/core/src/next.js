@@ -52,6 +52,10 @@ function generateStaticPaths(files = null, drafts = false) {
 function paginateStaticPaths(pagination) {
   let paths = [];
 
+  // perform basic validation of the `pagination` object
+  if (!(pagination?.totalPages || pagination?.template || pagination?.baseHref))
+    return paths;
+
   for (let i = 2; i <= pagination.totalPages; i++) {
     paths.push(
       parseTemplate(pagination.template, {
