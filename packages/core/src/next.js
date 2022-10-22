@@ -53,16 +53,16 @@ function paginateStaticPaths(pagination) {
   let paths = [];
 
   // perform basic validation of the `pagination` object
-  if (!(pagination?.totalPages || pagination?.template || pagination?.baseHref))
-    return paths;
-
-  for (let i = 2; i <= pagination.totalPages; i++) {
-    paths.push(
-      parseTemplate(pagination.template, {
-        baseHref: pagination.baseHref,
-        id: i,
-      }),
-    );
+  if (pagination?.totalPages && pagination?.template && pagination?.baseHref) {
+    // parse each of the items
+    for (let i = 2; i <= pagination.totalPages; i++) {
+      paths.push(
+        parseTemplate(pagination.template, {
+          baseHref: pagination.baseHref,
+          id: i,
+        }),
+      );
+    }
   }
 
   return { paths, fallback: true };
