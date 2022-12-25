@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.5
+
+### Patch Changes
+
+- restructure of docBySlug and auto computing a filesystem based href
+
 ## 0.0.4
 
 ### Patch Changes

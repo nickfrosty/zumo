@@ -33,6 +33,10 @@ async function getDocBySlug(slug, basePath = "") {
     // load the doc and return it as requested
     const doc = await loadAndParseDoc(filePath);
 
+    // compute the href for the doc
+    const href = computeHrefForDoc(doc, basePath);
+    doc.href = href;
+
     if (
       !doc ||
       (doc?.meta?.draft === true && process.env?.NODE_ENV === "production")
@@ -47,6 +51,25 @@ async function getDocBySlug(slug, basePath = "") {
 }
 
 /**
+ * Compute the absolute href of a given doc
+ * @param {object} doc full doc or doc.meta data object
+ * @param {string} basePath string of the base bath used to locate the doc
+ * @returns string of the absolute href for the given doc
+ */
+function computeHrefForDoc(doc, basePath) {
+  //
+  let href = doc.path.substring(doc.path.indexOf(basePath));
+
+  //
+  href = href.substring(0, href.indexOf(doc.slug));
+
+  //
+  href = `/${href}${doc.slug}`;
+
+  return href;
+}
+
+/**
  * Retrieve a markdown document's front matter meta, parsed and ready to go
  * @param {string} slug slug of the file name to locate
  * @param {string} basePath (optional) folder path inside of the `content` folder to search for the given slug
@@ -55,7 +78,12 @@ async function getDocBySlug(slug, basePath = "") {
 async function getDocMetaBySlug(slug, basePath = "") {
   try {
     const doc = await getDocBySlug(slug, basePath);
-    return (doc && doc?.meta) || false;
+    if (!doc || typeof doc !== "object") throw Error("Unable to locate doc");
+
+    // clear the content
+    doc.content = "";
+
+    return doc || false;
   } catch (err) {
     console.warn("Unable to locate document:", slug);
     console.warn(err);
@@ -137,9 +165,10 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
     // construct the parsed 'doc' to return
     const doc = {
       path: filePath,
+      href: null,
+      slug: null,
       meta: file?.data || {},
       content: metaOnly ? null : file?.content,
-      slug: null,
     };
 
     // enable the user to override the `updatedAt` date from the front matter
@@ -166,7 +195,8 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
     // generate and store the slug
     // TODO: handle user specified slugs in the front matter
     doc.slug = generateSlug(doc);
-    doc.meta.slug = doc.slug;
+    // doc.meta.slug = doc.slug;
+    // doc.meta.path = doc.path;
 
     // convert the `tags` to an array
     if (doc.meta?.tags && typeof doc.meta.tags === "string")
