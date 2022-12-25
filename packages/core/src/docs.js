@@ -195,8 +195,7 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
     // generate and store the slug
     // TODO: handle user specified slugs in the front matter
     doc.slug = generateSlug(doc);
-    // doc.meta.slug = doc.slug;
-    // doc.meta.path = doc.path;
+    doc.meta.slug = doc.slug;
 
     // convert the `tags` to an array
     if (doc.meta?.tags && typeof doc.meta.tags === "string")

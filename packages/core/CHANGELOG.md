@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.6
+
+### Patch Changes
+
+- fixed slug in doc meta
+
 ## 0.0.5
 
 ### Patch Changes
