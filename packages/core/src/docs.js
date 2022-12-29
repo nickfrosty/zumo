@@ -171,22 +171,16 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
       content: metaOnly ? null : file?.content,
     };
 
-    // enable the user to override the `updatedAt` date from the front matter
+    // always define the `createdAt` date
     doc.meta.createdAt = DateTime.fromJSDate(stats.birthtime).toString();
+
+    // process the front matter supplied `date`
     if (doc.meta?.date) doc.meta.date = new Date(doc.meta.date).toISOString();
 
-    // parse and set the `updatedAt` date
-    if (!doc?.meta?.updatedAt && doc?.meta?.updatedAt !== false)
-      doc.meta.updatedAt = DateTime.fromJSDate(stats.mtime).toString();
-    else if (doc?.meta?.updatedAt !== "") {
-      let tmp = new Date(doc?.meta?.updatedAt);
-
-      if (tmp instanceof Date && !isNaN(tmp).valueOf()) {
-        // console.log("valid and parse");
-        doc.updatedAt = DateTime.fromISO(tmp.toISOString()).toString();
-      }
-      // else invalid date and keep it as the updated loaded from the file
-    }
+    // process the front matter supplied `updatedAt`
+    if (doc?.meta?.updatedAt && doc?.meta?.updatedAt !== false)
+      doc.meta.updatedAt = new Date(doc.meta.updatedAt).toISOString();
+    else doc.meta.updatedAt = DateTime.fromJSDate(stats.mtime).toString();
 
     // TODO: generate the SEO details?
 

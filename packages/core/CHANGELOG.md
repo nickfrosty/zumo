@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.10
+
+### Patch Changes
+
+- changed how dates are saved to a doc's meta
+
 ## 0.0.9
 
 ### Patch Changes
