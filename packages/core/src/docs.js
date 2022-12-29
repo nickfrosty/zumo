@@ -9,7 +9,7 @@ const { DateTime } = require("luxon");
 
 // const { BASE_PATH } = require("./constants");
 const { crawlForFiles, locateFilePath } = require("./fs");
-const { getDateByPriority, generateSlug } = require("./formatters");
+const { generateSlug, sortByPriorityDate } = require("./formatters");
 
 /**
  * Retrieve a markdown document from the `content` directory, parsed and ready to go
@@ -124,18 +124,7 @@ async function getDocsByPath(searchPath = "", filter = null) {
     if (!docs || !docs?.length) return false;
 
     // sort the docs by their dates (making the newest first)
-    docs.sort(function (a, b) {
-      // determine the sorting date by their priority level
-      let aDate = getDateByPriority(a.meta);
-      let bDate = getDateByPriority(b.meta);
-
-      // sort the items
-      if (aDate < bDate) return 1;
-      else if (aDate > bDate) return -1;
-      return 0;
-    });
-
-    // docs.reverse();
+    docs = sortByPriorityDate(docs, "desc");
 
     // pre filter the docs before returning
     if (filter && typeof filter === "object") docs = filterDocs(docs, filter);

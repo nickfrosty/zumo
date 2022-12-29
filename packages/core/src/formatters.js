@@ -81,6 +81,27 @@ function getDateByPriority({
 }
 
 /**
+ * Sorts a listing of docs by their priority date
+ * @param {array} docs array listing of parsed `doc` objects
+ * @param {string} order `asc` or `desc` sort order
+ * @returns sorted array
+ */
+function sortByPriorityDate(docs, order = "desc") {
+  return docs.sort(function (a, b) {
+    if (order == "asc")
+      return (
+        dateToUnixTimestamp(getDateByPriority(a.meta)) -
+        dateToUnixTimestamp(getDateByPriority(b.meta))
+      );
+    else
+      return (
+        dateToUnixTimestamp(getDateByPriority(b.meta)) -
+        dateToUnixTimestamp(getDateByPriority(a.meta))
+      );
+  });
+}
+
+/**
  * Compute the required parameters used in pagination
  * @param {number} count total number of items to paginate
  * @param {number} page the current page of items to parse
@@ -138,10 +159,21 @@ function displayDate(date, format = null) {
     .toString();
 }
 
+/**
+ * Convert any string date into a unix timestamp
+ * @param {string} date
+ * @returns int of the unix timestamp
+ */
+function dateToUnixTimestamp(date) {
+  return DateTime.fromISO(new Date(date).toISOString()).toUnixInteger();
+}
+
 module.exports = {
+  dateToUnixTimestamp,
   computePagination,
   displayDate,
   generateSlug,
   getDateByPriority,
+  sortByPriorityDate,
   parseTemplate,
 };
