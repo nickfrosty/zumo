@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.9
+
+### Patch Changes
+
+- fixed typo in loading meta only
+
 ## 0.0.8
 
 ### Patch Changes

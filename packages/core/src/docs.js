@@ -111,13 +111,13 @@ async function getDocsByPath(searchPath = "", options = {}) {
 
   try {
     // crawl the `searchPath` for all the documents, and parse them
-    const files = crawlForFiles(searchPath, options.metaOnly);
+    const files = crawlForFiles(searchPath, true);
 
     // load and parse each of the located docs
     for (let i = 0; i < files.length; i++) {
       // attempt to load the doc's meta info
       try {
-        const doc = await loadAndParseDoc(files[i], true);
+        const doc = await loadAndParseDoc(files[i], options.metaOnly);
 
         if (doc) {
           if (
