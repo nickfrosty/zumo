@@ -15,17 +15,5 @@ yarn changeset
 When ready to publish a new version of all the modified packages:
 
 ```bash
-yarn changeset version && yarn changeset tag
-```
-
-Commit all changes, followed by a push following tags.
-
-```bash
-git push --follow-tags
-```
-
-Finally, to push the new release to the public:
-
-```bash
-yarn changeset publish
+yarn release
 ```
