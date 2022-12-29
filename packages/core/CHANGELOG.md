@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.11
+
+### Patch Changes
+
+- option to prevent returning draft docs
+
 ## 0.0.10
 
 ### Patch Changes

@@ -100,9 +100,10 @@ async function getDocMetaBySlug(slug, basePath = "") {
 async function getDocsByPath(searchPath = "", options = {}) {
   // define the default options, and slice in the custom client supplied ones
   options = {
-    filter: false,
+    filters: false,
     metaOnly: true,
-    draftsInProd: false,
+    hideDrafts: false,
+    draftsInProd: false, // TODO
     ...options,
   };
 
@@ -120,7 +121,8 @@ async function getDocsByPath(searchPath = "", options = {}) {
         const doc = await loadAndParseDoc(files[i], options.metaOnly);
 
         if (doc) {
-          if (
+          if (doc?.meta?.draft === true && options.hideDrafts) continue;
+          else if (
             doc?.meta?.draft !== true ||
             process.env?.NODE_ENV !== "production"
           )
@@ -135,8 +137,8 @@ async function getDocsByPath(searchPath = "", options = {}) {
     docs = sortByPriorityDate(docs, "desc");
 
     // pre filter the docs before returning (when desired)
-    if (options?.filter && typeof options.filter === "object")
-      docs = filterDocs(docs, options.filter);
+    if (options?.filters && typeof options.filters === "object")
+      docs = filterDocs(docs, options.filters);
 
     return docs;
   } catch (err) {
