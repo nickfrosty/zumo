@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.8
+
+### Patch Changes
+
+- - added release script
+
 ## 0.0.7
 
 ### Patch Changes
