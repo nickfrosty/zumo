@@ -94,14 +94,24 @@ async function getDocMetaBySlug(slug, basePath = "") {
 /**
  * Retrieve a listing of markdown documents from the given `searchPath` directory, parsed and ready to go
  * @param {string} searchPath base relative path of documents to locate
+ * @param {object} options custom options to use on the docs
  * @returns `array` of documents located inside the `searchPath`
  */
-async function getDocsByPath(searchPath = "", filter = null) {
-  try {
-    // crawl the `searchPath` for all the documents
-    const files = crawlForFiles(searchPath, true);
+async function getDocsByPath(searchPath = "", options = {}) {
+  // define the default options, and slice in the custom client supplied ones
+  options = {
+    filter: false,
+    metaOnly: true,
+    draftsInProd: false,
+    ...options,
+  };
 
-    let docs = [];
+  // define the base array of docs
+  let docs = [];
+
+  try {
+    // crawl the `searchPath` for all the documents, and parse them
+    const files = crawlForFiles(searchPath, options.metaOnly);
 
     // load and parse each of the located docs
     for (let i = 0; i < files.length; i++) {
@@ -121,20 +131,21 @@ async function getDocsByPath(searchPath = "", filter = null) {
       }
     }
 
-    if (!docs || !docs?.length) return false;
-
     // sort the docs by their dates (making the newest first)
     docs = sortByPriorityDate(docs, "desc");
 
-    // pre filter the docs before returning
-    if (filter && typeof filter === "object") docs = filterDocs(docs, filter);
+    // pre filter the docs before returning (when desired)
+    if (options?.filter && typeof options.filter === "object")
+      docs = filterDocs(docs, options.filter);
 
     return docs;
   } catch (err) {
     console.warn("Unable to locate path:", path);
     console.warn(err);
   }
-  return false;
+
+  // always returns an array, hopefully with docs!
+  return docs;
 }
 
 /**
