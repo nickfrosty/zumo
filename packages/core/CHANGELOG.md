@@ -1,5 +1,11 @@
 # zumo
 
+## 0.0.12
+
+### Patch Changes
+
+- auto convert all doc tags into an array
+
 ## 0.0.11
 
 ### Patch Changes

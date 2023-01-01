@@ -193,9 +193,16 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
     doc.slug = generateSlug(doc);
     doc.meta.slug = doc.slug;
 
-    // convert the `tags` to an array
-    if (doc.meta?.tags && typeof doc.meta.tags === "string")
-      doc.meta.tags = doc.meta.tags.split(",").map((item) => item.trim());
+    // always convert any found `tags` to an array of tags
+    if (doc.meta?.tags) {
+      if (!Array.isArray(doc.meta.tags))
+        doc.meta.tags = doc.meta.tags
+          .toString()
+          .split(",")
+          .map((tag) => tag.trim());
+
+      if (!Array.isArray(doc.meta.tags)) doc.meta.tags = null;
+    }
 
     // TODO: this does not parse MDX files, or actually check to make sure the file extension is .MD
 
