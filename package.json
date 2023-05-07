@@ -1,15 +1,33 @@
 {
-  "name": "@zumo/base",
+  "name": "zumo",
   "version": "0.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickfrosty/zumo.git"
+  },
+  "homepage": "https://github.com/nickfrosty/zumo",
+  "author": {
+    "name": "Nick Frostbutter",
+    "url": "https://github.com/nickfrosty"
+  },
+  "packageManager": "yarn@1.22.19",
+  "engines": {
+    "node": ">=16.0"
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
   "workspaces": [
     "docs",
-    "packages/*"
+    "package"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
+    "build": "echo todo",
+    "dev": "echo todo",
+    "lint": "lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "release": "yarn release:changeset && yarn release:commit && yarn release:publish",
     "release:changeset": "yarn changeset version && yarn changeset tag",
@@ -17,13 +35,8 @@
     "release:publish": "git push --follow-tags && yarn changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "latest",
     "prettier": "latest",
-    "turbo": "latest",
-    "@changesets/cli": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "dependencies": {},
-  "packageManager": "yarn@1.22.19"
+    "typescript": "^5.0.4"
+  }
 }

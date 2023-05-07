@@ -3,28 +3,42 @@
   "version": "0.0.12",
   "description": "",
   "license": "ISC",
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickfrosty/zumo.git"
+  },
   "homepage": "https://github.com/nickfrosty/zumo",
   "author": {
     "name": "Nick Frostbutter",
     "url": "https://github.com/nickfrosty"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nickfrosty/zumo.git"
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "luxon": "^3.0.4",
     "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.3.0",
+    "typescript": "^5.0.4"
   }
 }

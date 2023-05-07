@@ -1,15 +1,16 @@
+// @ts-nocheck
 /**
  *
  * **/
 
-const fs = require("fs");
-const path = require("path");
-const matter = require("gray-matter");
-const { DateTime } = require("luxon");
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { DateTime } from "luxon";
 
-// const { BASE_PATH } = require("./constants");
-const { crawlForFiles, locateFilePath } = require("./fs");
-const { generateSlug, sortByPriorityDate } = require("./formatters");
+// import { BASE_PATH } from "./constants";
+import { crawlForFiles, locateFilePath } from "./fs";
+import { generateSlug, sortByPriorityDate } from "./formatters";
 
 /**
  * Retrieve a markdown document from the `content` directory, parsed and ready to go
@@ -17,7 +18,7 @@ const { generateSlug, sortByPriorityDate } = require("./formatters");
  * @param {string} basePath (optional) folder path inside of the `content` folder to search for the given slug
  * @returns
  */
-async function getDocBySlug(slug, basePath = "") {
+export async function getDocBySlug(slug, basePath = "") {
   try {
     // remove file extension from the slug
     if (!slug || typeof slug !== "string")
@@ -56,7 +57,7 @@ async function getDocBySlug(slug, basePath = "") {
  * @param {string} basePath string of the base bath used to locate the doc
  * @returns string of the absolute href for the given doc
  */
-function computeHrefForDoc(doc, basePath) {
+export function computeHrefForDoc(doc, basePath) {
   //
   let href = doc.path.substring(doc.path.indexOf(basePath));
 
@@ -75,7 +76,7 @@ function computeHrefForDoc(doc, basePath) {
  * @param {string} basePath (optional) folder path inside of the `content` folder to search for the given slug
  * @returns
  */
-async function getDocMetaBySlug(slug, basePath = "") {
+export async function getDocMetaBySlug(slug, basePath = "") {
   try {
     const doc = await getDocBySlug(slug, basePath);
     if (!doc || typeof doc !== "object") throw Error("Unable to locate doc");
@@ -97,7 +98,7 @@ async function getDocMetaBySlug(slug, basePath = "") {
  * @param {object} options custom options to use on the docs
  * @returns `array` of documents located inside the `searchPath`
  */
-async function getDocsByPath(searchPath = "", options = {}) {
+export async function getDocsByPath(searchPath = "", options = {}) {
   // define the default options, and slice in the custom client supplied ones
   options = {
     filters: false,
@@ -156,7 +157,7 @@ async function getDocsByPath(searchPath = "", options = {}) {
  * @param {boolean} metaOnly whether or not to only parse/return the meta data
  * @returns
  */
-async function loadAndParseDoc(filePath, metaOnly = false) {
+export async function loadAndParseDoc(filePath, metaOnly = false) {
   try {
     // read the file from the local file system
     const stats = fs.statSync(path.join(filePath));
@@ -223,7 +224,7 @@ async function loadAndParseDoc(filePath, metaOnly = false) {
  * @param {number} limit max number of filtered documents to return
  * @returns
  */
-function filterDocs(docs, filters, limit = 0) {
+export function filterDocs(docs, filters, limit = 0) {
   try {
     // parse each of the provided filters
     for (const [key, value] of Object.entries(filters)) {
@@ -279,11 +280,3 @@ function filterDocs(docs, filters, limit = 0) {
   }
   return false;
 }
-
-module.exports = {
-  filterDocs,
-  getDocBySlug,
-  getDocMetaBySlug,
-  getDocsByPath,
-  loadAndParseDoc,
-};

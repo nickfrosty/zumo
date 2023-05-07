@@ -1,14 +1,15 @@
+// @ts-nocheck
 /**
  *
  * **/
 
-const path = require("path");
-const { DateTime } = require("luxon");
-const slugify = require("slugify");
+import path from "path";
+import slugify from "slugify";
+import { DateTime } from "luxon";
 
-const { CONFIG_FILE_NAME } = require("./constants");
+import { CONFIG_FILE_NAME } from "./constants";
 
-function generateSlug(item) {
+export function generateSlug(item) {
   // example item
   const struct = {
     path: "", // string of the full file path
@@ -56,7 +57,7 @@ function generateSlug(item) {
  * @param {object} items keyed object of items to parse into the `template`
  * @returns fully parsed `template`
  */
-function parseTemplate(template, items) {
+export function parseTemplate(template, items) {
   template = template.toString() || "";
 
   for (const [key, value] of Object.entries(items))
@@ -69,7 +70,7 @@ function parseTemplate(template, items) {
  * Determine a docs' primary date based on the standard priority order of: `date`, `updatedAt`, `createdAt`
  * @param {object} listing Object listing of the posts dates
  */
-function getDateByPriority({
+export function getDateByPriority({
   date = null,
   updatedAt = null,
   createdAt = null,
@@ -86,7 +87,7 @@ function getDateByPriority({
  * @param {string} order `asc` or `desc` sort order
  * @returns sorted array
  */
-function sortByPriorityDate(docs, order = "desc") {
+export function sortByPriorityDate(docs, order = "desc") {
   return docs.sort(function (a, b) {
     if (order == "asc")
       return (
@@ -110,7 +111,7 @@ function sortByPriorityDate(docs, order = "desc") {
  * @param {number} perPage number of items desired per page
  * @returns `pagination` object ready to be used
  */
-function computePagination(
+export function computePagination(
   count = 1,
   page = 1,
   baseHref = "",
@@ -144,7 +145,7 @@ function computePagination(
  * @param {string|null} format `DateTime` compatible date format
  * @returns formatted date string, ready for display
  */
-function displayDate(date, format = null) {
+export function displayDate(date, format = null) {
   const defaultDate = "MMM dd, yyyy";
 
   try {
@@ -164,16 +165,6 @@ function displayDate(date, format = null) {
  * @param {string} date
  * @returns int of the unix timestamp
  */
-function dateToUnixTimestamp(date) {
+export function dateToUnixTimestamp(date) {
   return DateTime.fromISO(new Date(date).toISOString()).toUnixInteger();
 }
-
-module.exports = {
-  dateToUnixTimestamp,
-  computePagination,
-  displayDate,
-  generateSlug,
-  getDateByPriority,
-  sortByPriorityDate,
-  parseTemplate,
-};
