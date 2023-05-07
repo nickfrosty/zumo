@@ -1,7 +1,14 @@
 {
-  "extends": "../tsconfig.json",
   "include": ["./"],
   "compilerOptions": {
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "stripInternal": true,
+    "typeRoots": ["node_modules/@types"],
     "outDir": "dist/",
     "declarationDir": "dist/types",
     "sourceMap": true,
