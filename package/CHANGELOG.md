@@ -1,5 +1,11 @@
 # zumo
 
+## 0.1.0
+
+### Minor Changes
+
+- added typescript building
+
 ## 0.0.12
 
 ### Patch Changes
@@ -35,7 +41,8 @@
 ### Patch Changes
 
 - getDocsByPath take an object of options now
-- added a reusable function to convert dates to unix timestamps and also better "sort docs by date"
+- added a reusable function to convert dates to unix timestamps and also better
+  "sort docs by date"
 
 ## 0.0.6
 
