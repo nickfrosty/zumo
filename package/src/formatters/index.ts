@@ -3,9 +3,53 @@
  *
  * **/
 
-import { DateTime } from "luxon";
+export * from "./slugify";
 
-import { CONFIG_FILE_NAME } from "./constants";
+import { DateTime } from "luxon";
+import { slugify } from "./slugify";
+
+// import { CONFIG_FILE_NAME } from "./constants";
+
+export function generateSlug(item) {
+  // example item
+  const struct = {
+    path: "", // string of the full file path
+    meta: {}, // object of a files frontmatter meta data
+  };
+
+  let slug = "";
+
+  /* 
+    Order of precedence for slug generation:
+      1. item as a string (e.g. the string path of the file or the title from the doc front matter)
+      2. item.path
+      // 3. item.meta.slug
+      // 3. item.title
+  */
+
+  if (typeof item === "string") slug = item;
+  else if (item?.path) slug = item.path;
+  else return "";
+
+  // for path based slugs, strip out the final item (aka file name slug) from the path
+  if (slug.indexOf(path.sep) >= 0) {
+    slug = slug.split(path.sep);
+    slug = slug[slug.length - 1];
+  }
+
+  // extract the final slugified version of the slug
+  slug = slugify(slug);
+
+  // NOTE: this may result in unexpected issues if the file name has multiple extensions (e.g ".md.bak")
+  // but this should not be a problem for simple text files (like .md) or most image formats
+  // TODO: fix this from being an issue...
+
+  // strip the file extension
+  return (
+    (typeof slug === "string" && slug?.substring(0, slug.lastIndexOf("."))) ||
+    slug
+  );
+}
 
 /**
  * Parse and return a `string` template
